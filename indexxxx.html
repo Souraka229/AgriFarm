@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriFarm - Connecter Agriculteurs et Acheteurs au Bénin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2e7d32;
+            --secondary-color: #7cb342;
+            --accent-color: #ff9800;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        /* Header et Navigation */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 1rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .user-menu {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .user-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            width: 150px;
+            z-index: 1001;
+        }
+        
+        .user-dropdown a {
+            display: block;
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            color: var(--dark-color);
+            transition: background-color 0.3s;
+        }
+        
+        .user-dropdown a:hover {
+            background-color: var(--light-color);
+        }
+        
+        .user-menu:hover .user-dropdown {
+            display: block;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* Authentification */
+        .auth-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .auth-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+        }
+        
+        .close-auth {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .auth-form h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .auth-switch {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+        
+        .auth-switch a {
+            color: var(--primary-color);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1625246335525-4e3a6d4f5e1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+            margin-top: 80px;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+        
+        /* Sections générales */
+        section {
+            padding: 5rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Cartes de fonctionnalités */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+        }
+        
+        /* Formulaires de recherche */
+        .search-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Liste des produits/agriculteurs */
+        .items-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .item-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .item-image {
+            height: 200px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .item-details {
+            padding: 1.5rem;
+        }
+        
+        .item-details h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-price {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+        }
+        
+        .item-location {
+            color: #666;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .item-location i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Conseils */
+        .advice-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .advice-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .advice-image {
+            height: 200px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .advice-content {
+            padding: 1.5rem;
+        }
+        
+        .advice-content h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        /* Contact */
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+        
+        .contact-info {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--light-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 1rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>AgriFarm</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#agriculteurs">Agriculteurs</a></li>
+                <li><a href="#acheteurs">Acheteurs</a></li>
+                <li><a href="#conseils">Conseils</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="user-menu" id="userMenu">
+                <div class="user-avatar" id="userAvatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-dropdown">
+                    <a href="#profile">Mon profil</a>
+                    <a href="#messages">Messages</a>
+                    <a href="#settings">Paramètres</a>
+                    <a href="#" id="logoutBtn">Déconnexion</a>
+                </div>
+            </div>
+            <a href="#" class="btn" id="authBtn">S'inscrire / Se connecter</a>
+        </nav>
+    </header>
+
+    <!-- Formulaires d'authentification -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-form" id="loginForm">
+            <span class="close-auth" id="closeAuth">&times;</span>
+            <h2>Connexion</h2>
+            <form id="loginFormElement" name="login" netlify>
+                <input type="hidden" name="form-name" value="login">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mot de passe</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn">Se connecter</button>
+            </form>
+            <div class="auth-switch">
+                Pas encore inscrit? <a id="showRegister">Créer un compte</a>
+            </div>
+        </div>
+
+        <div class="auth-form" id="registerForm" style="display: none;">
+            <span class="close-auth" id="closeAuthRegister">&times;</span>
+            <h2>Inscription</h2>
+            <form id="registerFormElement" name="register" netlify>
+                <input type="hidden" name="form-name" value="register">
+                <div class="form-group">
+                    <label for="registerName">Nom complet</label>
+                    <input type="text" id="registerName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Téléphone</label>
+                    <input type="tel" id="registerPhone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerType">Je suis</label>
+                    <select id="registerType" name="user_type" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="farmer">Agriculteur</option>
+                        <option value="buyer">Acheteur</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="registerLocation">Région</label>
+                    <select id="registerLocation" name="region" required>
+                        <option value="">Sélectionnez votre région</option>
+                        <option value="atlantique">Atlantique</option>
+                        <option value="littoral">Littoral</option>
+                        <option value="oueme">Ouémé</option>
+                        <option value="plateau">Plateau</option>
+                        <option value="borgou">Borgou</option>
+                        <option value="donga">Donga</option>
+                        <option value="alibori">Alibori</option>
+                        <option value="atacora">Atacora</option>
+                        <option value="couffo">Couffo</option>
+                        <option value="zou">Zou</option>
+                        <option value="mono">Mono</option>
+                        <option value="collines">Collines</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mot de passe</label>
+                    <input type="password" id="registerPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirmer le mot de passe</label>
+                    <input type="password" id="registerConfirmPassword" name="confirm_password" required>
+                </div>
+                <button type="submit" class="btn">S'inscrire</button>
+            </form>
+            <div class="auth-switch">
+                Déjà inscrit? <a id="showLogin">Se connecter</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="accueil">
+        <h1>Connecter les Agriculteurs et Acheteurs au Bénin</h1>
+        <p>AgriFarm révolutionne le marché agricole béninois en mettant en relation directe les producteurs locaux avec les acheteurs, tout en fournissant des conseils experts pour améliorer la production.</p>
+        <div>
+            <a href="#agriculteurs" class="btn">Je suis Agriculteur</a>
+            <a href="#acheteurs" class="btn" style="background-color: white; color: var(--primary-color); margin-left: 1rem;">Je suis Acheteur</a>
+        </div>
+    </section>
+
+    <!-- Section Agriculteurs -->
+    <section id="agriculteurs">
+        <div class="section-title">
+            <h2>Espace Agriculteurs</h2>
+            <p>Vendez vos produits directement aux acheteurs sans intermédiaires</p>
+        </div>
+        
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-store"></i>
+                </div>
+                <h3>Vendre Mes Produits</h3>
+                <p>Créez votre boutique en ligne et présentez vos produits à des acheteurs locaux.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Analyser le Marché</h3>
+                <p>Obtenez des informations sur les prix du marché et les demandes des consommateurs.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <h3>Logistique Simplifiée</h3>
+                <p>Organisez la livraison de vos produits grâce à notre réseau de transporteurs.</p>
+            </div>
+        </div>
+        
+        <div class="search-form">
+            <h3>Publier un Nouveau Produit</h3>
+            <form name="new-product" netlify>
+                <input type="hidden" name="form-name" value="new-product">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Nom du produit</label>
+                        <input type="text" id="productName" name="product_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Catégorie</label>
+                        <select id="productCategory" name="category" required>
+                            <option value="">Sélectionnez</option>
+                            <option value="vegetables">Légumes</option>
+                            <option value="fruits">Fruits</option>
+                            <option value="cereals">Céréales</option>
+                            <option value="tubers">Tubercules</option>
+                            <option value="livestock">Produits animaux</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Prix (FCFA)</label>
+                        <input type="number" id="productPrice" name="price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productQuantity">Quantité</label>
+                        <input type="number" id="productQuantity" name="quantity" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" name="description" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn">Publier le Produit</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Section Acheteurs -->
+    <section id="acheteurs" style="background-color: #f9f9f9;">
+        <div class="section-title">
+            <h2>Espace Acheteurs</h2>
+            <p>Achetez directement des producteurs locaux des produits frais et de qualité</p>
+        </div>
+        
+        <div class="search-form">
+            <h3>Rechercher des Produits</h3>
+            <form name="search-products" netlify>
+                <input type="hidden" name="form-name" value="search-products">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="searchCategory">Catégorie</label>
+                        <select id="searchCategory" name="category">
+                            <option value="">Toutes les catégories</option>
+                            <option value="vegetables">Légumes</option>
+                            <option value="fruits">Fruits</option>
+                            <option value="cereals">Céréales</option>
+                            <option value="tubers">Tubercules</option>
+                            <option value="livestock">Produits animaux</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="searchRegion">Région</label>
+                        <select id="searchRegion" name="region">
+                            <option value="">Toutes les régions</option>
+                            <option value="atlantique">Atlantique</option>
+                            <option value="littoral">Littoral</option>
+                            <option value="oueme">Ouémé</option>
+                            <option value="plateau">Plateau</option>
+                            <option value="borgou">Borgou</option>
+                            <option value="donga">Donga</option>
+                            <option value="alibori">Alibori</option>
+                            <option value="atacora">Atacora</option>
+                            <option value="couffo">Couffo</option>
+                            <option value="zou">Zou</option>
+                            <option value="mono">Mono</option>
+                            <option value="collines">Collines</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Rechercher</button>
+            </form>
+        </div>
+        
+        <h3 style="margin-top: 3rem;">Produits Disponibles</h3>
+        <div class="items-list">
+            <div class="item-card">
+                <div class="item-image" style="background-image: url('https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80');"></div>
+                <div class="item-details">
+                    <h3>Maïs de qualité</h3>
+                    <div class="item-price">350 FCFA/kg</div>
+                    <div class="item-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Plateau</span>
+                    </div>
+                    <p>Maïs fraîchement récolté, sans pesticides.</p>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">Contacter</button>
+                </div>
+            </div>
+            
+            <div class="item-card">
+                <div class="item-image" style="background-image: url('https://images.unsplash.com/photo-1591768575198-88dac53fbd0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80');"></div>
+                <div class="item-details">
+                    <h3>Tomates fraîches</h3>
+                    <div class="item-price">500 FCFA/kg</div>
+                    <div class="item-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ouémé</span>
+                    </div>
+                    <p>Tomates biologiques, récoltées quotidiennement.</p>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">Contacter</button>
+                </div>
+            </div>
+            
+            <div class="item-card">
+                <div class="item-image" style="background-image: url('https://images.unsplash.com/photo-1573246123716-6b1782bfc499?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80');"></div>
+                <div class="item-details">
+                    <h3>Igname du Bénin</h3>
+                    <div class="item-price">300 FCFA/kg</div>
+                    <div class="item-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Collines</span>
+                    </div>
+                    <p>Igname de première qualité, production locale.</p>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;">Contacter</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Conseils -->
+    <section id="conseils">
+        <div class="section-title">
+            <h2>Conseils Agricoles</h2>
+            <p>Des ressources pour améliorer votre production et votre business</p>
+        </div>
+        
+        <div class="advice-container">
+            <div class="advice-card">
+                <div class="advice-image" style="background-image: url('https://images.unsplash.com/photo-1625246335525-4e3a6d4f5e1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                <div class="advice-content">
+                    <h3>Techniques modernes d'irrigation</h3>
+                    <p>Découvrez comment optimiser votre consommation d'eau tout en améliorant vos rendements avec des systèmes d'irrigation modernes et abordables.</p>
+                    <a href="#" class="btn" style="margin-top: 1rem;">Lire plus</a>
+                </div>
+            </div>
+            
+            <div class="advice-card">
+                <div class="advice-image" style="background-image: url('https://images.unsplash.com/photo-1595433361835-1e24ea17c7f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                <div class="advice-content">
+                    <h3>Gestion des cultures saisonnières</h3>
+                    <p>Apprenez à planifier vos cultures en fonction des saisons et des conditions météorologiques pour maximiser votre production toute l'année.</p>
+                    <a href="#" class="btn" style="margin-top: 1rem;">Lire plus</a>
+                </div>
+            </div>
+            
+            <div class="advice-card">
+                <div class="advice-image" style="background-image: url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');"></div>
+                <div class="advice-content">
+                    <h3>Stratégies de commercialisation</h3>
+                    <p>Développez des techniques efficaces pour vendre vos produits au meilleur prix et établir des relations durables avec vos acheteurs.</p>
+                    <a href="#" class="btn" style="margin-top: 1rem;">Lire plus</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    <section id="contact" style="background-color: #f9f9f9;">
+        <div class="section-title">
+            <h2>Contactez-Nous</h2>
+            <p>Nous sommes là pour répondre à toutes vos questions</p>
+        </div>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Informations de Contact</h3>
+                
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h4>Adresse</h4>
+                        <p>123 Rue du Marché, Cotonou, Bénin</p>
+                    </div>
+                </div>
+                
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <h4>Téléphone</h4>
+                        <p>+229 12 34 56 78</p>
+                    </div>
+                </div>
+                
+                <div class="contact-detail">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h4>Email</h4>
+                        <p>contact@agrifarm.bj</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="search-form">
+                <h3>Envoyez-nous un Message</h3>
+                <form name="contact" netlify>
+                    <input type="hidden" name="form-name" value="contact">
+                    <div class="form-group">
+                        <label for="contactName">Votre Nom</label>
+                        <input type="text" id="contactName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Votre Email</label>
+                        <input type="email" id="contactEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactSubject">Sujet</label>
+                        <input type="text" id="contactSubject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message</label>
+                        <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Envoyer le Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>AgriFarm</h3>
+                <p>La plateforme qui connecte directement les agriculteurs et les acheteurs au Bénin.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Liens Rapides</h3>
+                <ul class="footer-links">
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#agriculteurs">Agriculteurs</a></li>
+                    <li><a href="#acheteurs">Acheteurs</a></li>
+                    <li><a href="#conseils">Conseils</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Ressources</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Guide de l'agriculteur</a></li>
+                    <li><a href="#">Prix du marché</a></li>
+                    <li><a href="#">Météo agricole</a></li>
+                    <li><a href="#">Événements</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Centre d'aide</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 AgriFarm Bénin. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion de l'authentification
+            const authBtn = document.getElementById('authBtn');
+            const authContainer = document.getElementById('authContainer');
+            const closeAuth = document.getElementById('closeAuth');
+            const closeAuthRegister = document.getElementById('closeAuthRegister');
+            const showRegister = document.getElementById('showRegister');
+            const showLogin = document.getElementById('showLogin');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const loginFormElement = document.getElementById('loginFormElement');
+            const registerFormElement = document.getElementById('registerFormElement');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userMenu = document.getElementById('userMenu');
+            const userAvatar = document.getElementById('userAvatar');
+            
+            // Vérifier le statut de connexion
+            function checkAuthStatus() {
+                const user = JSON.parse(localStorage.getItem('agrifarm_user') || 'null');
+                
+                if (user && user.isLoggedIn) {
+                    authBtn.style.display = 'none';
+                    userMenu.style.display = 'block';
+                    userAvatar.innerHTML = `<i class="fas fa-user"></i>`;
+                } else {
+                    authBtn.style.display = 'block';
+                    userMenu.style.display = 'none';
+                }
+            }
+            
+            // Initialiser le statut de connexion
+            checkAuthStatus();
+            
+            // Ouvrir le modal d'authentification
+            authBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                authContainer.style.display = 'flex';
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            });
+            
+            // Fermer le modal d'authentification
+            closeAuth.addEventListener('click', function() {
+                authContainer.style.display = 'none';
+            });
+            
+            closeAuthRegister.addEventListener('click', function() {
+                authContainer.style.display = 'none';
+            });
+            
+            // Afficher le formulaire d'inscription
+            showRegister.addEventListener('click', function(e) {
+                e.preventDefault();
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            });
+            
+            // Afficher le formulaire de connexion
+            showLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                registerForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            });
+            
+            // Fermer le modal en cliquant à l'extérieur
+            authContainer.addEventListener('click', function(e) {
+                if (e.target === authContainer) {
+                    authContainer.style.display = 'none';
+                }
+            });
+            
+            // Soumission du formulaire de connexion
+            loginFormElement.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                // Validation basique
+                if (!email || !password) {
+                    alert("Veuillez remplir tous les champs");
+                    return;
+                }
+                
+                // Fermer le modal après soumission
+                authContainer.style.display = 'none';
+                
+                // Simuler la connexion pour l'UI
+                const user = {
+                    email: email,
+                    name: email.split('@')[0],
+                    isLoggedIn: true
+                };
+                
+                localStorage.setItem('agrifarm_user', JSON.stringify(user));
+                checkAuthStatus();
+            });
+            
+            // Soumission du formulaire d'inscription
+            registerFormElement.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('registerName').value;
+                const email = document.getElementById('registerEmail').value;
+                const phone = document.getElementById('registerPhone').value;
+                const userType = document.getElementById('registerType').value;
+                const location = document.getElementById('registerLocation').value;
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                
+                if (password !== confirmPassword) {
+                    alert("Les mots de passe ne correspondent pas!");
+                    return;
+                }
+                
+                // Fermer le modal après soumission
+                authContainer.style.display = 'none';
+                
+                // Simuler l'inscription pour l'UI
+                const user = {
+                    name: name,
+                    email: email,
+                    phone: phone,
+                    type: userType,
+                    location: location,
+                    isLoggedIn: true
+                };
+                
+                localStorage.setItem('agrifarm_user', JSON.stringify(user));
+                checkAuthStatus();
+                alert('Inscription réussie! Bienvenue sur AgriFarm!');
+            });
+            
+            // Déconnexion
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('agrifarm_user');
+                checkAuthStatus();
+                alert('Vous avez été déconnecté avec succès.');
+            });
+            
+            // Navigation fluide
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (this.getAttribute('href') !== '#') {
+                        e.preventDefault();
+                        
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                        
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
